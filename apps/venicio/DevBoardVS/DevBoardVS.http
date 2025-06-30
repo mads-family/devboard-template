@@ -1,0 +1,6 @@
+@DevBoardVS_HostAddress = http://localhost:5169
+
+GET {{DevBoardVS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
