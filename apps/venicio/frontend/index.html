@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tasks List</title>
+  </head>
+  <body>
+    <h1>Tasks</h1>
+    <ul id="tasks"></ul>
+
+    <script>
+      fetch("http://localhost:5000/api/tasks")
+        .then((res) => res.json())
+        .then((tasks) => {
+          const ul = document.getElementById("tasks");
+          tasks.forEach((task) => {
+            const li = document.createElement("li");
+            li.textContent = `${task.id}: ${task.description} (${
+              task.done ? "Done" : "Pending"
+            })`;
+            ul.appendChild(li);
+          });
+        });
+    </script>
+  </body>
+</html>
