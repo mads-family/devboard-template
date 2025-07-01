@@ -1,100 +1,41 @@
+require('dotenv').config();
 const express = require('express');
-const axios = require('axios');
+const { Pool } = require('pg');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
-app.use(express.json()); // Habilita JSON no corpo das requisições
-
-// GET /posts - Lista todos os posts
-app.get('/posts', async (req, res) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/posts`);
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar posts' });
-  }
+// Conexão com PostgreSQL
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
-// GET /posts/:id - Busca um post por ID
-app.get('/posts/:id', async (req, res) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/posts/${req.params.id}`);
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar post' });
-  }
+// Middleware de log
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} acessado`);
+  next();
 });
 
-// GET /posts/:id/comments - Busca comentários de um post
-app.get('/posts/:id/comments', async (req, res) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/posts/${req.params.id}/comments`);
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar comentários do post' });
-  }
-});
-
-// GET /comments?postId=1 - Busca comentários por query
-app.get('/comments', async (req, res) => {
-  try {
-    const { postId } = req.query;
-    const response = await axios.get(`${BASE_URL}/comments`, {
-      params: { postId }
-    });
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao buscar comentários' });
-  }
-});
-
-// POST /posts - Cria um novo post
-app.post('/posts', async (req, res) => {
-  try {
-    const response = await axios.post(`${BASE_URL}/posts`, req.body);
-    res.status(201).json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao criar post' });
-  }
-});
-
-// PUT /posts/:id - Substitui um post
-app.put('/posts/:id', async (req, res) => {
-  try {
-    const response = await axios.put(`${BASE_URL}/posts/${req.params.id}`, req.body);
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao subtituir post' });
-  }
-});
-
-// PATCH /posts/:id - Atualiza um post
-app.patch('/posts/:id', async (req, res) => {
-  try {
-    const response = await axios.patch(`${BASE_URL}/posts/${req.params.id}`, req.body);
-    res.json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao atualizar o post' });
-  }
-});
-
-// DELETE /posts/:id - Remove um post
-app.delete('/posts/:id', async (req, res) => {
-  try {
-    const response = await axios.delete(`${BASE_URL}/posts/${req.params.id}`);
-    res.json({ message: 'Post deletado (simulado)', status: response.status });
-  } catch (err) {
-    res.status(500).json({ error: 'Erro ao deletar post' });
-  }
-});
-
-// Healthcheck
 app.get('/healthcheck', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({
+    status: 'ok',
+    uptime: process.uptime().toFixed(2) + 's'
+  });
+});
+
+app.get('/tasks', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tasks ORDER BY id');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar tasks:', error);
+    res.status(500).json({ error: 'Erro ao buscar tarefas' });
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`API rodando em http://localhost:${PORT}`);
 });
