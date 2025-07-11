@@ -6,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const x= 1
+const test=123
 
 // Conexão com PostgreSQL
 const pool = new Pool({
