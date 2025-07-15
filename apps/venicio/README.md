@@ -2,6 +2,7 @@
 
 ![Docker](https://img.shields.io/badge/docker-ready-blue)
 [![Contributions](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/)
 
 ## 🚀 Running locally
 

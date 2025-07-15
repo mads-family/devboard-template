@@ -53,3 +53,11 @@ Please follow these guidelines:
 5. After approval, merge using **Squash and merge** to keep a clean commit history.
 
 ---
+
+## 🐳 Containers
+
+The container of the project should use the names below for consistency and clarity.
+
+- `api`: backend ASP.NET
+- `db`: PostgreSQL
+- `frontend`: nginx servindo HTML
