@@ -73,3 +73,7 @@ Veja as instruções em [`CONTRIBUTING.md`](./CONTRIBUTING.md)
 - O script `init.sql` é executado automaticamente na primeira inicialização do banco
 
 ---
+- Node.js + Express
+- Axios
+- Docker
+- Docker Compose
