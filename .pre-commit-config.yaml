@@ -17,12 +17,18 @@ repos:
 
       - id: eslint-frontend-venicio
         name: eslint frontend venicio
-        entry: bash -c "cd apps/venicio/frontend && npm install && npm run lint"
+        entry: wsl -d Ubuntu -- bash -c "cd apps/venicio/frontend && npm install && npm run lint"
+        language: system
+        pass_filenames: false
+
+      - id: eslint-frontend-victor
+        name: eslint frontend victor
+        entry: wsl -d Ubuntu -- bash -c "cd apps/victor && npm install && npm run lint"
         language: system
         pass_filenames: false
 
       - id: check-required-files-venicio
         name: Check required files for Venicio
-        entry: bash -c "test -f README.md && test -f apps/venicio/docker-compose.yml"
+        entry: wsl -d Ubuntu -- bash -c "test -f README.md && test -f apps/venicio/docker-compose.yml"
         language: system
         pass_filenames: false
