@@ -1,5 +1,9 @@
 # API do Victor
 
+![Status](https://img.shields.io/badge/status-dev-blue)
+![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
+
+
 API REST básica feita com Node.js e PostgreSQL, containerizada com Docker.
 
 

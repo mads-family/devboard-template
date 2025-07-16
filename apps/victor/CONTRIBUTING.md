@@ -60,3 +60,12 @@ git checkout -b feat/nova-feature
 4. Abra um Pull Request para a branch `dev`
 
 5. Aguarde revisão ou merge
+
+## Containers
+
+Utilizar os seguintes padrões ao definir containers
+
+- Usar nomes curtos e descritivos (ex: `api`, `db`, `frontend`)
+- Prefixar com `-devboard` (ex: `api-devboard`, `db-devboard`)
+-
+
