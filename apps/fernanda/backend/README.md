@@ -16,6 +16,8 @@ npm start
 ## Endpoints
 
 - `GET /` - Hello World
+- `GET /healthcheck` - Returns uptime, status, and service info
+- `GET /tasks` - Fetches tasks from the PostgreSQL database
 
 ## Port
 
