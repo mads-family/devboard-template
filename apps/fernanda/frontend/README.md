@@ -22,6 +22,7 @@ npm run preview
 - Shows loading state while fetching data
 - Handles errors if the API is offline
 - Manual refresh button
+- Displays tasks fetched from the backend
 
 ## Port
 
