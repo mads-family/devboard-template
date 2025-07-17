@@ -6,10 +6,12 @@ const API_URL = 'http://localhost:3000'
 function App() {
   const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
+  const [tasks, setTasks] = useState([])
   const [error, setError] = useState('')
 
   useEffect(() => {
     fetchMessage()
+    fetchTasks()
   }, [])
 
   const fetchMessage = async () => {
@@ -30,6 +32,21 @@ function App() {
       console.error('Error fetching message:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch(`${API_URL}/tasks`)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setTasks(data.data || [])
+    } catch (error) {
+      console.error('Error fetching tasks:', error)
     }
   }
 
@@ -64,6 +81,32 @@ function App() {
         <button onClick={fetchMessage} disabled={loading}>
           {loading ? 'Loading...' : 'Refresh Message'}
         </button>
+
+        <div className='tasks-section'>
+          <h2>📋 Tasks from Database</h2>
+          {tasks.length > 0 ? (
+            <div className='tasks-grid'>
+              {tasks.map(task => (
+                <div key={task.id} className='task-card'>
+                  <div className='task-header'>
+                    <h3>{task.title}</h3>
+                    <span className={`status ${task.status}`}>
+                      {task.status}
+                    </span>
+                  </div>
+                  <p className='task-description'>{task.description}</p>
+                  <div className='task-footer'>
+                    <small>
+                      Created: {new Date(task.created_at).toLocaleDateString()}
+                    </small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No tasks found</p>
+          )}
+        </div>
       </header>
     </div>
   )
