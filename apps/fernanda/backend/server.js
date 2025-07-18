@@ -1,6 +1,10 @@
-require('dotenv').config()
-const express = require('express')
-const { Pool } = require('pg')
+import dotenv from 'dotenv'
+import express from 'express'
+import pkg from 'pg'
+const { Pool } = pkg
+
+dotenv.config()
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -10,7 +14,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'devboard',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres'
+  password: process.env.DB_PASSWORD || 'postgres',
 })
 
 // Store server start time for uptime calculation
@@ -40,7 +44,7 @@ app.get('/', (req, res) => {
   res.json({
     message: 'Hello World!',
     service: 'DevBoard Backend',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   })
 })
 
@@ -52,7 +56,7 @@ app.get('/healthcheck', (req, res) => {
     uptime: uptime,
     timestamp: new Date().toISOString(),
     service: 'DevBoard Backend',
-    version: '1.0.0'
+    version: '1.0.0',
   })
 })
 
@@ -68,7 +72,7 @@ app.get('/tasks', async (req, res) => {
     res.json({
       success: true,
       count: result.rows.length,
-      data: result.rows
+      data: result.rows,
     })
   } catch (error) {
     console.error('Error fetching tasks:', error)
@@ -76,7 +80,7 @@ app.get('/tasks', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch tasks',
-      message: error.message
+      message: error.message,
     })
   }
 })
