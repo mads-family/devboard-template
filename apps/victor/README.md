@@ -1,4 +1,4 @@
-# API do Victor /
+# API do Victor
 
 ![Status](https://img.shields.io/badge/status-dev-blue)
 ![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
