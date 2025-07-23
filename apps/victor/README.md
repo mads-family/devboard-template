@@ -2,6 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-dev-blue)
 ![Lint](https://img.shields.io/badge/lint-passing-brightgreen)
+![CI](https://github.com/mads-family/devboard-template/actions/workflows/victor.yml/badge.svg?branch=victor)
 
 
 API REST básica feita com Node.js e PostgreSQL, containerizada com Docker.
