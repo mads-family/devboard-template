@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, victor]
+  pull_request:
+    branches: [main, victor]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Instalar dependências
+        run: npm ci
+
+      - name: 🧹 Rodar Lint
+        run: npm run lint
+
+      - name: 🛠️ Build da aplicação
+        run: npm run build
+
+      - name: 🐳 Construir imagem Docker
+        run: docker build -t devboard-api .
+
+      - name: 🚀 Subir container da API
+        run: docker run -d -p 3000:3000 --name devboard-api devboard-api
+
+      - name: 🔍 Verificar /healthcheck
+        run: |
+          sleep 5
+          curl --fail http://localhost:3000/healthcheck
