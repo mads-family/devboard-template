@@ -27,10 +27,6 @@ jobs:
         working-directory: ./apps/victor
         run: npm run lint
 
-      - name: 🛠️ Build da aplicação
-        working-directory: ./apps/victor
-        run: npm run build
-
       - name: 🐳 Construir imagem Docker
         working-directory: ./apps/victor
         run: docker build -t devboard-api .
