@@ -47,6 +47,20 @@ jobs:
           echo "DB_PASSWORD=victor_pass" >> .env
           echo "DB_DATABASE=victor_db" >> .env
 
+      - name: 🐳 Construir imagem Docker
+        working-directory: ./apps/victor
+        run: docker build -t devboard-api .
+
+      - name: 🔍 Scan de segurança com Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devboard-api'
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+
       - name: 🐳 Subir containers
         working-directory: ./apps/victor
         run: docker-compose up -d --build
