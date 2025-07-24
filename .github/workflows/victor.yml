@@ -27,15 +27,16 @@ jobs:
         working-directory: ./apps/victor
         run: npm run lint
 
-      - name: 🐳 Construir imagem Docker
+      - name: 🐳 Subir containers com docker-compose
         working-directory: ./apps/victor
-        run: docker build -t devboard-api .
-
-      - name: 🚀 Subir container da API
-        working-directory: ./apps/victor
-        run: docker run -d -p 3000:3000 --name devboard-api devboard-api
+        run: docker-compose up -d --build
 
       - name: 🔍 Verificar /healthcheck
         run: |
           sleep 5
           curl --fail http://localhost:3000/healthcheck
+
+      - name: 🧼 Encerrar containers
+        if: always()
+        working-directory: ./apps/victor
+        run: docker-compose down
