@@ -35,8 +35,3 @@ jobs:
         run: |
           sleep 5
           curl --fail http://localhost:3000/healthcheck
-
-      - name: 🧼 Encerrar containers
-        if: always()
-        working-directory: ./apps/victor
-        run: docker-compose down
