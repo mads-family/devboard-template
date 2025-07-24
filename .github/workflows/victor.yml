@@ -24,10 +24,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: 📦 Instalar dependências
         working-directory: ./apps/victor
         run: npm ci
+        env:
+          CI: true
 
       - name: � Rodar Lint
         working-directory: ./apps/victor
