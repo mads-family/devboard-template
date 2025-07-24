@@ -2,9 +2,9 @@ name: VICTOR
 
 on:
   push:
-    branches: [main, victor]
+    branches: [victor]
   pull_request:
-    branches: [main, victor]
+    branches: [victor]
 
 jobs:
   build-and-test:
@@ -19,7 +19,7 @@ jobs:
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
-        
+
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,15 +29,26 @@ jobs:
         working-directory: ./apps/victor
         run: npm ci
 
-      - name: 🧹 Rodar Lint
+      - name: � Rodar Lint
         working-directory: ./apps/victor
         run: npm run lint
 
-      - name: 🐳 Subir serviços com docker-compose
+      - name: 🐳 Configurar ambiente
+        working-directory: ./apps/victor
+        run: |
+          # Cria .env temporário baseado no .env.example com valores padrão
+          echo "PORT=3000" > .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_USER=victor_user" >> .env
+          echo "DB_PASSWORD=victor_pass" >> .env
+          echo "DB_DATABASE=victor_db" >> .env
+
+      - name: 🐳 Subir containers
         working-directory: ./apps/victor
         run: docker-compose up -d --build
 
-      - name: 🔍 Verificar /healthcheck
+      - name: 🔍 Verificar saúde da API
         run: |
-          sleep 5
+          sleep 10
           curl --fail http://localhost:3000/healthcheck
