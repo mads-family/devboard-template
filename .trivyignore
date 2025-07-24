@@ -1,0 +1,5 @@
+# Ignorar vulnerabilidades específicas
+GHSA-xffm-g5w8-qvg7 # @eslint/plugin-kit
+GHSA-rm8p-cx58-hcvx # axios
+CVE-2024-21538      # cross-spawn
+CVE-2025-7783       # form-data
