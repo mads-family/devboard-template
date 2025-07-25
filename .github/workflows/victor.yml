@@ -56,7 +56,7 @@ jobs:
         with:
           image-ref: 'devboard-api'
           format: 'table'
-          exit-code: '0'  # Mude para '1' após resolver as vulnerabilidades
+          exit-code: '0'  # Mude para '1' após resolver as vulnerabilidades, teste
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
           vuln-type: 'os,library'
