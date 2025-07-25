@@ -25,6 +25,14 @@ jobs:
         with:
           node-version: 18
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       # Instala dependências do frontend (evita erro no lint)
       - name: Install Node.js dependencies
         working-directory: apps/venicio/frontend
@@ -41,6 +49,14 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       # Roda o dotnet format (equivalente ao lint do backend)
       - name: Run dotnet format
         run: dotnet format apps/venicio/DevBoardVS/DevBoardVS.csproj --verify-no-changes --verbosity diagnostic
@@ -54,9 +70,28 @@ jobs:
         run: docker compose -f apps/venicio/docker-compose.yml up -d
 
       # Espera alguns segundos para os serviços subirem
-      - name: Wait for services
-        run: sleep 10
+      - name: Wait for API to be ready
+        run: |
+          for i in {1..10}; do
+            if curl --fail http://localhost:5000/healthcheck; then
+              echo "API is up!";
+              exit 0;
+            fi
+            echo "Waiting for API... ($i)"
+            sleep 3
+          done
+          echo "API failed to start."
+          exit 1
 
-      # Testa o /healthcheck da sua API
-      - name: Healthcheck test
-        run: curl --fail http://localhost:5108/healthcheck
+      # Testes .NET (se existirem)
+      - name: Run .NET tests (if any)
+        if: ${{ hashFiles('**/*Tests.csproj') != '' }}
+        run: dotnet test --logger:trx
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: devboard-api-venicio:latest
+          format: table
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH,MEDIUM"
