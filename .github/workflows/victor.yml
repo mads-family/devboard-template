@@ -70,3 +70,12 @@ jobs:
         run: |
           sleep 10
           curl --fail http://localhost:3000/healthcheck
+
+      - name: 🔐 Login no Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD_VICTOR }}" | docker login -u "${{ secrets.DOCKER_USERNAME_VICTOR }}" --password-stdin
+
+      - name: 📦 Tag da imagem Docker
+        run: docker tag devboard-api ${{ secrets.DOCKER_USERNAME_VICTOR }}/devboard-api:latest
+
+      - name: 📤 Publicar imagem no Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME_VICTOR }}/devboard-api:latest
