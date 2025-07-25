@@ -1,0 +1,62 @@
+name: CI - Venicio
+
+on:
+  push:
+    paths:
+      - "apps/venicio/**"
+      - ".github/workflows/ci-venicio.yml"
+  pull_request:
+    paths:
+      - "apps/venicio/**"
+      - ".github/workflows/ci-venicio.yml"
+
+jobs:
+  venicio-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Baixa o código do repositório
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Instala o Node.js (para rodar o ESLint do frontend)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # Instala dependências do frontend (evita erro no lint)
+      - name: Install Node.js dependencies
+        working-directory: apps/venicio/frontend
+        run: npm ci
+
+      # Roda o ESLint no frontend
+      - name: Run ESLint
+        working-directory: apps/venicio/frontend
+        run: npm run lint
+
+      # Instala o .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      # Roda o dotnet format (equivalente ao lint do backend)
+      - name: Run dotnet format
+        run: dotnet format apps/venicio/DevBoardVS/DevBoardVS.csproj --verify-no-changes --verbosity diagnostic
+
+      # Faz o build da imagem usando docker-compose
+      - name: Docker Compose Build
+        run: docker compose -f apps/venicio/docker-compose.yml build
+
+      # Sobe os containers (em background)
+      - name: Docker Compose Up
+        run: docker compose -f apps/venicio/docker-compose.yml up -d
+
+      # Espera alguns segundos para os serviços subirem
+      - name: Wait for services
+        run: sleep 10
+
+      # Testa o /healthcheck da sua API
+      - name: Healthcheck test
+        run: curl --fail http://localhost:5108/healthcheck
