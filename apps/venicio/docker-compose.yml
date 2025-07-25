@@ -25,9 +25,7 @@ services:
       - "5432:5432"
 
   frontend:
-    image: devboard-frontend-venicio:latest
-    volumes:
-      - ./frontend:/usr/share/nginx/html
+    build: ./frontend
     ports:
       - "8080:80"
 
