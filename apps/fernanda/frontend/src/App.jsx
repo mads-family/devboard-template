@@ -73,7 +73,7 @@ function App() {
           {!loading && !error && (
             <div className='success'>
               <p>✅ Message from backend:</p>
-              <h2>"{message}"</h2>
+              <h2>&ldquo;{message}&rdquo;</h2>
             </div>
           )}
         </div>
