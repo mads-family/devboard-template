@@ -81,7 +81,35 @@ git push origin feat/my-new-feature
 - Make adjustments if needed
 - Merge after approval
 
-## 📝 General Rules
+## � Container Naming Conventions
+
+### Pattern: `devboard-fernanda-{service}`
+
+**Examples:**
+
+- `devboard-fernanda-backend`
+- `devboard-fernanda-frontend`
+- `devboard-fernanda-postgres`
+
+**Docker Compose:**
+
+```yaml
+services:
+  backend:
+    container_name: devboard-fernanda-backend
+  postgres:
+    container_name: devboard-fernanda-postgres
+
+networks:
+  devboard-fernanda-network:
+    name: devboard-fernanda-network
+
+volumes:
+  devboard-fernanda-postgres-data:
+    name: devboard-fernanda-postgres-data
+```
+
+## �📝 General Rules
 
 - **Always** create a branch for new features
 - **Never** commit directly to `main`

@@ -51,6 +51,18 @@ docker compose up --build -d
 - **PostgreSQL 15** - Database service
 - **Nginx** - Frontend web server
 
+## 📊 Project Standards
+
+- **Container Naming**: Following `devboard-fernanda-{service}` pattern
+- **Code Quality**: ESLint + Prettier enforced via pre-commit
+- **Documentation**: Comprehensive README and CONTRIBUTING guides
+- **Testing**: Automated API endpoint testing
+- **Environment**: `.env.example` template provided
+
+For detailed standards, see:
+
+- [Contributing Guidelines](./docs/CONTRIBUTING.md)
+
 ## 🔧 Local Development
 
 ### Prerequisites
@@ -59,22 +71,7 @@ docker compose up --build -d
 - **Node.js 22+** (for local development)
 - **Git**
 
-## 📚 Features
-
-### Current
-
-- ✅ **Backend API** with Express and PostgreSQL
-- ✅ **Frontend** with React and modern UI
-- ✅ **Docker** containerization
-- ✅ **Database** initialization with sample data
-- ✅ **Environment** configuration
-- ✅ **CORS** support for frontend-backend communication
-
-## 🤝 Contributing
-
-Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-## �️ Development Commands
+## 📋 Development Commands
 
 ### Using Makefile (Recommended)
 
@@ -116,7 +113,22 @@ make healthcheck
 curl http://localhost:3000/healthcheck
 ```
 
-## �📄 License
+## 📚 Features
+
+### Current
+
+- ✅ **Backend API** with Express and PostgreSQL
+- ✅ **Frontend** with React and modern UI
+- ✅ **Docker** containerization
+- ✅ **Database** initialization with sample data
+- ✅ **Environment** configuration
+- ✅ **CORS** support for frontend-backend communication
+
+## 🤝 Contributing
+
+Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
