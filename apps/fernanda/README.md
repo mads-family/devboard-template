@@ -1,5 +1,10 @@
 # DevBoard - Fernanda's Implementation
 
+[![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-purple.svg)](https://postgresql.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Full-stack application built with **Node.js**, **Express**, **React**, **PostgreSQL**, and **Docker**.
 
 ## 🚀 Quick Start
@@ -13,7 +18,7 @@ cd devboard-template/apps/fernanda
 cp .env.example .env
 
 # 3. Run with Docker
-docker-compose up --build
+docker compose up --build -d
 
 # 4. Access
 # Frontend: http://localhost:8080
@@ -69,9 +74,51 @@ docker-compose up --build
 
 Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-## 📄 License
+## �️ Development Commands
 
-This project is licensed under the MIT License.
+### Using Makefile (Recommended)
+
+```bash
+make help          # Show all available commands
+make up             # Start all services
+make dev            # Start development mode
+make lint           # Run linting
+make format         # Format code
+make test           # Run API tests
+make healthcheck    # Test backend health
+make clean          # Clean up everything
+```
+
+### Manual Commands
+
+```bash
+# Docker
+docker compose up --build
+docker compose down
+
+# Development
+cd backend && npm run dev
+cd frontend && npm run dev
+
+# Code Quality
+cd backend && npm run lint
+cd frontend && npm run format
+```
+
+### API Testing
+
+```bash
+# Run comprehensive API tests
+./scripts/test-api.sh
+
+# Quick healthcheck
+make healthcheck
+curl http://localhost:3000/healthcheck
+```
+
+## �📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Support
 
