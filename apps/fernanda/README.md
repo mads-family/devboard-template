@@ -1,5 +1,6 @@
 # DevBoard - Fernanda's Implementation
 
+[![CI](https://github.com/mads-family/devboard-template/actions/workflows/ci-fernanda.yml/badge.svg)](https://github.com/mads-family/devboard-template/actions/workflows/ci-fernanda.yml)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-purple.svg)](https://postgresql.org/)
