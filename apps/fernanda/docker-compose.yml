@@ -36,8 +36,6 @@ services:
       - "3000:3000"
     networks:
       - devboard-fernanda-network
-    volumes:
-      - devboard-fernanda-node-modules-backend:/app/node_modules
     depends_on:
       postgres:
         condition: service_healthy
@@ -59,8 +57,6 @@ services:
 volumes:
   devboard-fernanda-postgres-data:
     name: devboard-fernanda-postgres-data
-  devboard-fernanda-node-modules-backend:
-    name: devboard-fernanda-node-modules-backend
 
 networks:
   devboard-fernanda-network:
