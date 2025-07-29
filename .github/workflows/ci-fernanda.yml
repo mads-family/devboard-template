@@ -9,6 +9,7 @@ on:
     branches: [fernanda]
     paths:
       - 'apps/fernanda/**'
+  workflow_dispatch:
 
 jobs:
   lint-and-format:
@@ -129,3 +130,71 @@ jobs:
         run: |
           docker compose down -v
           docker system prune -f
+
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build Backend Image for Scanning
+        working-directory: apps/fernanda
+        run: |
+          docker build -t devboard-fernanda-backend:security-scan ./backend
+
+      - name: 🏗️ Build Frontend Image for Scanning
+        working-directory: apps/fernanda
+        run: |
+          docker build -t devboard-fernanda-frontend:security-scan ./frontend
+
+      - name: 🔍 Run Trivy Security Scan - Backend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devboard-fernanda-backend:security-scan'
+          format: 'sarif'
+          output: 'trivy-backend-results.sarif'
+
+      - name: 🔍 Run Trivy Security Scan - Frontend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devboard-fernanda-frontend:security-scan'
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+
+      - name: 📊 Upload Trivy Scan Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-backend-results.sarif'
+
+      - name: 📊 Upload Frontend Trivy Scan Results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-frontend-results.sarif'
+
+      - name: 🔍 Run Trivy Security Scan - Backend (Table Format)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devboard-fernanda-backend:security-scan'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: 🔍 Run Trivy Security Scan - Frontend (Table Format)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devboard-fernanda-frontend:security-scan'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
