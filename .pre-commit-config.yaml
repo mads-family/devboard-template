@@ -26,3 +26,38 @@ repos:
         entry: bash -c "test -f README.md && test -f apps/venicio/docker-compose.yml"
         language: system
         pass_filenames: false
+
+      - id: eslint-backend-fernanda
+        name: eslint backend fernanda
+        entry: bash -c "cd apps/fernanda/backend && npm run lint"
+        language: system
+        pass_filenames: false
+        files: 'apps/fernanda/backend/.*'
+
+      - id: eslint-frontend-fernanda
+        name: eslint frontend fernanda
+        entry: bash -c "cd apps/fernanda/frontend && npm run lint"
+        language: system
+        pass_filenames: false
+        files: 'apps/fernanda/frontend/.*'
+
+      - id: format-backend-fernanda
+        name: format backend fernanda
+        entry: bash -c "cd apps/fernanda/backend && npm run format"
+        language: system
+        pass_filenames: false
+        files: 'apps/fernanda/backend/.*'
+
+      - id: format-frontend-fernanda
+        name: format frontend fernanda
+        entry: bash -c "cd apps/fernanda/frontend && npm run format"
+        language: system
+        pass_filenames: false
+        files: 'apps/fernanda/frontend/.*'
+
+      - id: check-required-files-fernanda
+        name: Check required files for Fernanda
+        entry: bash -c "test -f apps/fernanda/README.md && test -f apps/fernanda/docker-compose.yml && test -f apps/fernanda/docs/CONTRIBUTING.md"
+        language: system
+        pass_filenames: false
+        files: 'apps/fernanda/.*'

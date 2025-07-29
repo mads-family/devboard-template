@@ -1,18 +1,20 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: devboard-postgres
+    container_name: devboard-fernanda-postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - devboard-fernanda-postgres-data:/var/lib/postgresql/data
       - ./infra/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - '5432:5432'
+      - "5432:5432"
+    networks:
+      - devboard-fernanda-network
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -21,7 +23,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: devboard-backend
+    container_name: devboard-fernanda-backend
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
@@ -31,7 +33,9 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
-      - '3000:3000'
+      - "3000:3000"
+    networks:
+      - devboard-fernanda-network
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,12 +45,19 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: devboard-frontend
+    container_name: devboard-fernanda-frontend
     ports:
-      - '8080:80'
+      - "8080:80"
+    networks:
+      - devboard-fernanda-network
     depends_on:
       - backend
     restart: unless-stopped
 
 volumes:
-  postgres_data:
+  devboard-fernanda-postgres-data:
+    name: devboard-fernanda-postgres-data
+
+networks:
+  devboard-fernanda-network:
+    name: devboard-fernanda-network
