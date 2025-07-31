@@ -1,0 +1,23 @@
+name: Deploy Victor
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar dependências
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io docker-compose make
+
+      - name: Rodar Makefile de deploy local
+        working-directory: apps/victor
+        run: make deploy
